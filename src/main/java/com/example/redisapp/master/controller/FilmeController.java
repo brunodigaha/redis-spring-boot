@@ -2,6 +2,7 @@ package com.example.redisapp.master.controller;
 
 import com.example.redisapp.master.model.Filme;
 import com.example.redisapp.master.repository.RedisRepository;
+import com.example.redisapp.master.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class FilmeController {
 
     @Autowired
     private RedisRepository redisRepository;
+
+    @Autowired
+    private RedisService redisService;
 
 //    @PostConstruct
     public void start(){
@@ -61,16 +65,16 @@ public class FilmeController {
     }
 
     @GetMapping("/save")
-    ResponseEntity<?> save() {
+    ResponseEntity<?> save() throws Exception {
 
         Filme filme = new Filme();
         filme.setNome("novo");
         filme.setDuração(Long.valueOf(768));
 
 
-        redisRepository.save(filme);
+         Filme filmeSasved = redisService.save(filme);
 
-        return ResponseEntity.status(HttpStatus.OK).body(redisRepository.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(filmeSasved);
     }
 
 }

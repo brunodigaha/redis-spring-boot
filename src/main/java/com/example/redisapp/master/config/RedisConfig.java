@@ -1,17 +1,37 @@
 package com.example.redisapp.master.config;
 
 import io.lettuce.core.RedisURI;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
+import javax.sql.DataSource;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 
+//@Configuration
+//@EnableTransactionManagement
+//public class RedisConfig implements TransactionManagementConfigurer {
 @Configuration
-public class RedisConfig {
+@EnableTransactionManagement
+public class RedisConfig  {
+
+
+    @Bean
+    public StringRedisTemplate redisTemplate() {
+        StringRedisTemplate template = new StringRedisTemplate(redisConnectionFactory());
+        // explicitly enable transaction support
+        template.setEnableTransactionSupport(true);
+        return template;
+    }
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
@@ -39,4 +59,22 @@ public class RedisConfig {
 
         return new LettuceConnectionFactory(config);
     }
+
+//    @Override
+//    public PlatformTransactionManager annotationDrivenTransactionManager() {
+//        return new DataSourceTransactionManager(dataSource());;
+//    }
+
+//    @Bean
+//    public DataSource dataSource() throws SQLException {
+//        return DataSourceBuilder.create().build();
+//    }
+//
+//    @Bean
+//    public PlatformTransactionManager transactionManager() throws SQLException {
+//        return new DataSourceTransactionManager(dataSource());
+//    }
+
+
+
 }
