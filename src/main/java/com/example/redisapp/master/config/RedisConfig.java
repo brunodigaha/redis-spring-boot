@@ -16,10 +16,9 @@ public class RedisConfig {
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
 
-        URI redisURI = null;//
+        URI redisURI = null;
         String urlLocal = "redis://sts:YkFVCTbvBTXknNwJwTFcyIECGQ2QXNxE@redis-18198.c12.us-east-1-4.ec2.cloud.redislabs.com:18198";
         String urlServer = System.getenv("REDIS_URL");
-//        String urlServer = "redis://h:pb9a1233fb0dfd994001f7d3370a0efde3661de0557c1af7ec67722109fe6f259@ec2-54-209-190-123.compute-1.amazonaws.com:60039";
 
         try {
 
